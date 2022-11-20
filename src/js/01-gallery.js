@@ -1,9 +1,14 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+
 // Add imports above this line
+
 import { galleryItems } from './gallery-items';
+
 // Change code below this line
+
 // Делаем разметку
+
 const galleryMarkup = createGalleryCardMarkup(galleryItems);
 function createGalleryCardMarkup(galleryItem) {
   return galleryItems
@@ -20,10 +25,14 @@ function createGalleryCardMarkup(galleryItem) {
     })
     .join('');
 }
+
 // Рендерим в разметку
+
 const galleryEl = document.querySelector('.gallery');
 galleryEl.insertAdjacentHTML('afterbegin', galleryMarkup);
+
 // Делегируем событие клика на div галерею
+
 galleryEl.addEventListener('click', onGalleryClick);
 function onGalleryClick(event) {
   event.preventDefault();
@@ -50,5 +59,6 @@ let gallery = new SimpleLightbox('.gallery a', {
   captionDelay: 250,
   showCounter: false,
 });
+
 gallery.on('show.simplelightbox');
 // console.log(galleryMarkup);

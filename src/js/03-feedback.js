@@ -1,27 +1,63 @@
 import throttle from 'lodash.throttle';
-const STORAGE_KEY = 'feedback-form-state';
 const refs = {
   form: document.querySelector('.feedback-form'),
+  email: document.querySelector('input'),
+  message: document.querySelector('textarea'),
 };
+
 refs.form.addEventListener('submit', onFormSubmit);
-refs.form.addEventListener('input', throttle(onFormInput, 500));
-refs.form.addEventListener('input', e => {
-  formData[e.target.name] = e.target.value;
-});
-const formData = {};
-fillForm();
+refs.email.addEventListener('input', throttle(onEmailInput, 500));
+refs.message.addEventListener('input', throttle(onMessageInput, 500));
+
+const LOCALE_STORAGE = 'feedback-form-state';
+const localeItem = {};
+
+// Form
+
 function onFormSubmit(e) {
   e.preventDefault();
-  e.currentTarget.reset();
-  localStorage.removeItem(STORAGE_KEY);
+  e.target.reset();
+  localStorage.removeItem(LOCALE_STORAGE);
 }
-function onFormInput(e) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+
+// Message
+
+function onMessageInput(e) {
+  localeItem[e.target.name] = e.target.value;
+  localStorage.setItem(LOCALE_STORAGE, JSON.stringify(localeItem));
 }
-function fillForm() {
-  const savedMessage = localStorage.getItem(STORAGE_KEY, formData);
-  if (savedMessage) {
-    console.log(JSON.parse(savedMessage));
-    refs.form.value = savedMessage;
+
+function userLocaleMessage() {
+  try {
+    const userMessageItem = JSON.parse(localStorage.getItem(LOCALE_STORAGE));
+    if (userMessageItem) {
+      refs.message.value = userMessageItem.message;
+    }
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
 }
+
+userLocaleMessage();
+
+// Email
+
+function onEmailInput(e) {
+  localeItem[e.target.name] = e.target.value;
+  localStorage.setItem(LOCALE_STORAGE, JSON.stringify(localeItem));
+}
+
+function userlocaleEmail() {
+  try {
+    const userEmailItem = JSON.parse(localStorage.getItem(LOCALE_STORAGE));
+    if (userEmailItem) {
+      refs.email.value = userEmailItem.email;
+    }
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
+  }
+}
+
+userlocaleEmail();
